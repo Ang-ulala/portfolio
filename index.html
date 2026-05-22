@@ -345,6 +345,48 @@
   .method-it:last-child { border-bottom: none; }
   .method-it::before { content: '—'; color: var(--gold); }
 
+  .contact-panel {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem;
+    background: rgba(200,169,109,.08);
+    border: 1px solid rgba(200,169,109,.18);
+    border-radius: 1.2rem;
+    padding: 2rem 2.2rem;
+  }
+  .contact-copy {
+    max-width: 640px;
+  }
+  .contact-label {
+    font-size: .85rem; letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: .75rem;
+  }
+  .contact-text {
+    font-size: .95rem; color: var(--text-mid);
+    line-height: 1.9;
+  }
+  .whatsapp-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 1rem 1.75rem;
+    background: linear-gradient(135deg, rgba(255,214,126,.95), rgba(200,169,109,.95));
+    color: #111;
+    border-radius: 999px;
+    border: 1px solid rgba(255,214,126,.45);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-weight: 700;
+    box-shadow: 0 18px 40px rgba(200,169,109,.14);
+    text-decoration: none;
+    transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  }
+  .whatsapp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 26px 55px rgba(200,169,109,.2);
+    filter: saturate(1.05);
+  }
+
   /* FOOTER */
   .footer-wrap { border-top: 1px solid var(--border); }
   footer {
@@ -393,6 +435,8 @@
     .proj-badge { display: none; }
     .hero-stats { flex-wrap: wrap; gap: 2rem; }
     .hero-title { font-size: clamp(2.5rem, 8vw, 5rem); }
+    .contact-panel { flex-direction: column; align-items: flex-start; }
+    .whatsapp-btn { width: 100%; }
     footer { justify-content: center; }
     .footer-note { text-align: center; }
   }
@@ -634,7 +678,7 @@
           <div>
             <div class="pc-label">O desafio</div>
             <div class="pc-text">Identificar os consumidores de resultado. Situação financeira crítica com passivos superiores aos ativos, identificando o gap entre capacidade operacional e obrigações de dívida.</div>
-            <div class="pc-hl"><div class="pc-hl-dot"></div><div class="pc-hl-txt">Gap anualizado de R$5,8M entre EBITDA operacional e custo das dívidas para 2026</div></div>
+            <div class="pc-hl"><div class="pc-hl-dot"></div><div class="pc-hl-txt">Gap entre EBITDA e custo das dívidas</div></div>
           </div>
           <div>
             <div class="pc-label">A abordagem</div>
@@ -710,24 +754,14 @@
 
 <!-- ENTRE EM CONTATO -->
 <section id="contato">
-  <div class="sec-header reveal">
-    <p class="sec-tag">Entre em Contato</p>
-    <p class="sec-desc">Vamos juntos, te proporcionar mais <strong>clareza e direcionamento financeiro?</strong></p>
-  </div>
-  <div class="proj-grid">
-
-    <div class="proj-row reveal" onclick="toggleProj(this)">
-      <div class="proj-head">
-        <div class="proj-num">*</div>
-        <div>
-          <div class="proj-sector">yasmim novais | CONSULTORIA FINANCEIRA</div>
-          <div class="proj-title">(19) 99756-9475</div>
-        </div>
-      </div>
-      <div class="proj-body">
-        </div>
-      </div>
+  <div class="contact-panel reveal">
+    <div class="contact-copy">
+      <div class="contact-label">Vamos começar?</div>
+      <p class="contact-text">Me conte como posso te ajudar!</p>
     </div>
+    <a class="whatsapp-btn" href="https://wa.me/5519997569475?text=Ol%C3%A1%20Yasmim%2C%20vim%20pelo%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20solicitar%20uma%20proposta." target="_blank" rel="noopener">
+      Solicitar proposta
+    </a>
   </div>
 </section>
 
