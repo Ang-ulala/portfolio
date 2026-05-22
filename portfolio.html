@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfólio Profissional | Análise Financeira & Estratégia</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
+  :root {
+    --bg: #08080e;
+    --surface: #10101a;
+    --surface2: #171724;
+    --gold: #c8a96d;
+    --gold-dim: #a07d44;
+    --text: #e4dfd7;
+    --text-dim: #7a7585;
+    --text-mid: #b0a9be;
+    --border: #1e1e2e;
+    --border-gold: rgba(200,169,109,0.25);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: .35;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(8,8,14,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 400; letter-spacing: .18em;
+    color: var(--gold); text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    font-size: .75rem; font-weight: 400; letter-spacing: .12em;
+    color: var(--text-dim); text-decoration: none; text-transform: uppercase;
+    transition: color .3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .btn-contact {
+    font-size: .72rem; font-weight: 400; letter-spacing: .12em;
+    color: var(--gold); text-transform: uppercase;
+    border: 1px solid var(--border-gold);
+    padding: .45rem 1.1rem;
+    border-radius: 2px;
+    background: transparent;
+    cursor: pointer;
+    transition: background .3s, color .3s;
+    white-space: nowrap;
+  }
+  .btn-contact:hover { background: rgba(200,169,109,.08); }
+
+  /* Modal de contato */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(8,8,14,.75);
+    backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--surface2);
+    border: 1px solid var(--border-gold);
+    border-radius: 4px;
+    padding: 2.8rem 2.5rem;
+    width: min(92vw, 400px);
+    position: relative;
+  }
+  .modal-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 400;
+    color: var(--gold); letter-spacing: .06em;
+    margin-bottom: 1.6rem;
+  }
+  .modal-item {
+    display: flex; align-items: center; gap: .75rem;
+    margin-bottom: 1rem;
+  }
+  .modal-icon {
+    width: 16px; height: 16px; flex-shrink: 0;
+    color: var(--gold-dim);
+  }
+  .modal-item a {
+    font-size: .82rem; color: var(--text-mid);
+    text-decoration: none; letter-spacing: .04em;
+    transition: color .3s;
+  }
+  .modal-item a:hover { color: var(--gold); }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1.2rem;
+    background: none; border: none; cursor: pointer;
+    color: var(--text-dim); font-size: 1.2rem; line-height: 1;
+    transition: color .3s;
+  }
+  .modal-close:hover { color: var(--gold); }
+
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 3rem 5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(200,169,109,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,169,109,.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+  .hero-glow {
+    position: absolute; top: 15%; left: -5%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(200,169,109,.06) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-size: .7rem; font-weight: 500; letter-spacing: .28em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp .8s .2s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    font-weight: 300; line-height: 1.05; color: var(--text);
+    overflow-wrap: break-word; word-break: break-word;
+    opacity: 0; animation: fadeUp .8s .4s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    max-width: 520px; margin-top: 2rem;
+    font-size: .95rem; color: var(--text-mid); line-height: 1.85;
+    opacity: 0; animation: fadeUp .8s .6s forwards;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: .75rem;
+    margin-top: 3rem; padding: .85rem 2rem;
+    border: 1px solid var(--border-gold);
+    color: var(--gold); font-size: .78rem; font-weight: 400;
+    letter-spacing: .15em; text-transform: uppercase; text-decoration: none;
+    transition: background .3s;
+    opacity: 0; animation: fadeUp .8s .8s forwards;
+  }
+  .hero-cta:hover { background: rgba(200,169,109,.1); }
+  .hero-cta::after { content: '→'; }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 5rem;
+    opacity: 0; animation: fadeUp .8s 1s forwards;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 300; color: var(--gold); line-height: 1;
+  }
+  .stat-label {
+    font-size: .7rem; letter-spacing: .1em; color: var(--text-dim);
+    text-transform: uppercase; margin-top: .3rem;
+  }
+  .stat-div { width: 1px; background: var(--border); }
+
+  section { padding: 7rem 3rem; max-width: 1200px; margin: 0 auto; }
+  .sec-tag {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 500; margin-bottom: .8rem;
+  }
+  .sec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
+    color: var(--text); line-height: 1.2;
+  }
+  .sec-desc {
+    margin-top: 1rem; max-width: 600px;
+    color: var(--text-mid); font-size: .93rem; line-height: 1.85;
+  }
+  .sec-header { margin-bottom: 4rem; }
+
+  /* SOBRE */
+  #sobre { border-top: 1px solid var(--border); }
+  .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .sobre-text p { color: var(--text-mid); line-height: 1.9; margin-bottom: 1.2rem; font-size: .93rem; }
+  .sobre-text p strong { color: var(--text); font-weight: 500; }
+  .conf-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--text-dim); border: 1px solid var(--border);
+    padding: .3rem .8rem; margin-top: 1.2rem;
+  }
+  .conf-badge::before { content: '◉'; color: var(--gold); font-size: .45rem; }
+  .pillars { display: flex; flex-direction: column; gap: 1.5rem; }
+  .pillar { border-left: 2px solid var(--border-gold); padding-left: 1.5rem; }
+  .pillar-t { color: var(--gold); font-size: .8rem; letter-spacing: .08em; font-weight: 500; margin-bottom: .4rem; }
+  .pillar-d { color: var(--text-dim); font-size: .86rem; line-height: 1.65; }
+
+  /* SKILLS */
+  #competencias { border-top: 1px solid var(--border); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .skill-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 1.8rem; position: relative; overflow: hidden;
+    transition: border-color .3s, transform .3s;
+  }
+  .skill-card:hover { border-color: var(--border-gold); transform: translateY(-3px); }
+  .skill-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: linear-gradient(90deg, var(--gold), transparent);
+    opacity: 0; transition: opacity .3s;
+  }
+  .skill-card:hover::before { opacity: 1; }
+  .sk-icon { font-size: 1.4rem; margin-bottom: 1rem; }
+  .sk-name { font-size: .88rem; font-weight: 500; color: var(--text); margin-bottom: .4rem; }
+  .sk-items { font-size: .78rem; color: var(--text-dim); line-height: 1.85; }
+  .sk-bar-w { margin-top: 1.2rem; }
+  .sk-bar { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .sk-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dim));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 1.2s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* PROJETOS */
+  #projetos { border-top: 1px solid var(--border); }
+  .proj-grid { display: flex; flex-direction: column; gap: 2px; }
+  .proj-row {
+    background: var(--surface); border: 1px solid var(--border);
+    overflow: hidden; cursor: pointer; transition: border-color .3s;
+  }
+  .proj-row:hover, .proj-row.open { border-color: var(--border-gold); }
+  .proj-head {
+    display: grid; grid-template-columns: 55px 1fr auto auto;
+    align-items: center; gap: 2rem; padding: 1.8rem 2rem;
+  }
+  .proj-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem; color: var(--border); font-weight: 300;
+    transition: color .3s;
+  }
+  .proj-row:hover .proj-num, .proj-row.open .proj-num { color: var(--gold); }
+  .proj-sector {
+    font-size: .66rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: .4rem;
+  }
+  .proj-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; font-weight: 400; color: var(--text);
+  }
+  .proj-badge {
+    font-size: .68rem; padding: .22rem .7rem;
+    border: 1px solid var(--border); color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: .1em; white-space: nowrap;
+  }
+  .proj-plus {
+    color: var(--text-dim); font-size: 1.3rem; font-weight: 300;
+    transition: transform .4s, color .3s;
+  }
+  .proj-row.open .proj-plus { transform: rotate(45deg); color: var(--gold); }
+  .proj-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height .55s cubic-bezier(.4,0,.2,1);
+    border-top: 0px solid var(--border);
+  }
+  .proj-row.open .proj-body { max-height: 700px; border-top-width: 1px; }
+  .proj-content {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.5rem;
+    padding: 2.5rem 2rem;
+  }
+  .pc-label {
+    font-size: .66rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: .8rem;
+  }
+  .pc-text { font-size: .86rem; color: var(--text-mid); line-height: 1.8; }
+  .pc-hl { display: flex; align-items: flex-start; gap: .7rem; margin-top: 1rem; }
+  .pc-hl-dot {
+    width: 5px; height: 5px; background: var(--gold);
+    border-radius: 50%; margin-top: .55rem; flex-shrink: 0;
+  }
+  .pc-hl-txt { font-size: .8rem; color: var(--text-dim); line-height: 1.65; font-style: italic; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .6rem; }
+  .tag {
+    font-size: .68rem; padding: .18rem .6rem;
+    background: rgba(200,169,109,.07); border: 1px solid rgba(200,169,109,.18);
+    color: var(--gold-dim); border-radius: 2px;
+  }
+
+  /* SETORES */
+  #setores { border-top: 1px solid var(--border); padding-top: 5rem; padding-bottom: 5rem; }
+  .setores-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
+  .setor-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 2rem 1.2rem; text-align: center;
+    transition: border-color .3s, background .3s;
+  }
+  .setor-card:hover { border-color: var(--border-gold); background: var(--surface2); }
+  .setor-icon { font-size: 1.8rem; margin-bottom: .8rem; }
+  .setor-nm { font-size: .8rem; color: var(--text); font-weight: 500; margin-bottom: .4rem; }
+  .setor-ct { font-size: .7rem; color: var(--text-dim); }
+
+  /* METODOLOGIA */
+  #metodologia { border-top: 1px solid var(--border); }
+  .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .method-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 2.5rem; position: relative; overflow: hidden;
+  }
+  .method-n {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem; font-weight: 300;
+    color: rgba(200,169,109,.08);
+    position: absolute; top: .8rem; right: 1.5rem; line-height: 1;
+    z-index: 0;
+  }
+  .method-t,
+  .method-d,
+  .method-its {
+    position: relative;
+    z-index: 1;
+  }
+  .method-t {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; color: var(--text); margin-bottom: .8rem;
+  }
+  .method-d { font-size: .86rem; color: var(--text-mid); line-height: 1.8; }
+  .method-its { margin-top: 1.2rem; }
+  .method-it {
+    display: flex; align-items: center; gap: .75rem;
+    font-size: .8rem; color: var(--text-dim); padding: .4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .method-it:last-child { border-bottom: none; }
+  .method-it::before { content: '—'; color: var(--gold); }
+
+  /* FOOTER */
+  .footer-wrap { border-top: 1px solid var(--border); }
+  footer {
+    padding: 4rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; color: var(--text-dim);
+  }
+  .footer-note {
+    font-size: .76rem; color: var(--text-dim);
+    max-width: 100%; line-height: 1.75; text-align: left;
+    min-width: 0;
+  }
+  .footer-note strong { color: var(--gold); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    #hero { padding: 7rem 1.5rem 4rem; }
+    .sobre-grid, .method-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .setores-grid { grid-template-columns: repeat(3, 1fr); }
+    .proj-content { grid-template-columns: 1fr; }
+    .proj-head { grid-template-columns: 40px 1fr auto; }
+    .proj-badge { display: none; }
+    .hero-stats { flex-wrap: wrap; gap: 2rem; }
+    .hero-title { font-size: clamp(2.5rem, 8vw, 5rem); }
+    footer { justify-content: center; }
+    .footer-note { text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .setores-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">ang | Consultoria Financeira</div>
+  <div class="nav-links">
+    <a href="#sobre">Perfil</a>
+    <a href="#competencias">Competências</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#metodologia">Metodologia</a>
+  </div>
+  <button class="btn-contact" onclick="document.getElementById('modalContato').classList.add('open')">Contato</button>
+</nav>
+
+<!-- Modal de Contato -->
+<div class="modal-overlay" id="modalContato" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('modalContato').classList.remove('open')" aria-label="Fechar">&#x2715;</button>
+    <div class="modal-name">Yasmim Novais</div>
+    <div class="modal-item">
+      <svg class="modal-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 17.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5A2.25 2.25 0 002.25 6.75m19.5 0l-9.75 6.75L2.25 6.75"/>
+      </svg>
+      <a href="mailto:silvanovaisyasmim@gmail.com">silvanovaisyasmim@gmail.com</a>
+    </div>
+    <div class="modal-item">
+      <svg class="modal-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 6.75z"/>
+      </svg>
+      <a href="https://wa.me/5519997569475" target="_blank" rel="noopener">(19) 99756-9475</a>
+    </div>
+  </div>
+</div>
+
+<div id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <p class="hero-label">Análise Financeira · Estratégia · Planejamento</p>
+  <h1 class="hero-title">
+    Transformando dados<br>em <em>decisões</em>
+  </h1>
+  <p class="hero-sub">
+    Portfólio de projetos em diagnósticos financeiros, planejamento estratégico e consultoria financeira. Construído com rigor metodológico e visão de negócio.
+  </p>
+  
+</div>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="sec-header reveal">
+    <p class="sec-tag">01 — Perfil</p>
+    <h2 class="sec-title">Quem sou e<br>o que entrego</h2>
+  </div>
+  <div class="sobre-grid">
+    <div class="sobre-text reveal">
+      <p>Profissional de <strong>análise financeira e estratégia</strong>, atuo diretamente em <strong>diagnósticos, planejamentos e estudos de sustentabilidade e maximização de resultados</strong> para empresas de diferentes portes e setores.</p>
+      <p>Cada acompanhamento é minucioso e dedicado: desde a estruturação metodológica, coleta e tratamento de dados, construção dos modelos financeiros, até a elaboração do material final e planos de ação.</p>
+      <p>Acredito que o grande diferencial de <strong>sucesso está na capacidade de transitar entre a profundidade técnica e a clareza estratégica,</strong> e meu papel é auxiliar neste direcionamento, <strong>traduzindo números e cenários em diagnósticos claros e planos tangíveis.</strong></p>
+      <div class="conf-badge">Projetos anonimizados por confidencialidade</div>
+    </div>
+    <div class="pillars reveal">
+      <div class="pillar">
+        <div class="pillar-t">Consultoria Financeira</div>
+        <div class="pillar-d">Acompanhamento e direcionamento semanal e mensal dos resultados diários da empresa: Fluxo de Caixa, Resultado Comercial, Resultado Mensal. Focados em planos de ação rápida para maximização de resultados e sustentabilidade financeira.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-t">Diagnóstico Financeiro</div>
+        <div class="pillar-d">Análise histórica detalhada de DRE, Balanço Patrimonial e Fluxo de Caixa com visão de geração de valor (ROIC), eficiência de capital e sustentabilidade operacional.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-t">Planejamento Estratégico</div>
+        <div class="pillar-d">Business Plans com <strong>projeções detalhadas linha a linha</strong> de 5 anos, modelagem de cenários, análise de riscos e recomendações estratégicas orientadas a resultado.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETÊNCIAS -->
+<section id="competencias">
+  <div class="sec-header reveal">
+    <p class="sec-tag">02 — Competências</p>
+    <h2 class="sec-title">Ferramentas e<br>abordagens técnicas</h2>
+    <p class="sec-desc">Conjunto de metodologias e frameworks aplicados consistentemente nos projetos do portfólio.</p>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="sk-icon">📊</div>
+      <div class="sk-name">Análise das Demonstrações Financeiras</div>
+      <div class="sk-items">DRE · Balanço Patrimonial · DFC<br>Análise horizontal e vertical (AH/AV)<br>Regime de caixa e competência</div>
+      <div class="sk-bar-w"><div class="sk-bar"><div class="sk-bar-fill" data-w="0.95"></div></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon">🌳</div>
+      <div class="sk-name">Composição Financeira & Resultado</div>
+      <div class="sk-items">Árvore de Resultados<br>Análise de Capital investido e eficiência<br>Drivers de geração de valor</div>
+      <div class="sk-bar-w"><div class="sk-bar"><div class="sk-bar-fill" data-w="0.90"></div></div></div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="sk-icon">📈</div>
+      <div class="sk-name">Modelagem Financeira & Projeções</div>
+      <div class="sk-items">Projeções e Planejamentos Estratégicos de 5 anos (DRE + DFC)<br>Acompanhamento e Projeção mensal detalhada<br>Premissas e análise de sensibilidade</div>
+      <div class="sk-bar-w"><div class="sk-bar"><div class="sk-bar-fill" data-w="0.88"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section id="projetos">
+  <div class="sec-header reveal">
+    <p class="sec-tag">03 — Projetos</p>
+    <h2 class="sec-title">+15 entregas,<br>+5 setores</h2>
+    <p class="sec-desc">Dados financeiros e nomes de empresas anonimizados por confidencialidade.</p>
+  </div>
+  <div class="proj-grid">
+
+    <div class="proj-row reveal" onclick="toggleProj(this)">
+      <div class="proj-head">
+        <div class="proj-num">01</div>
+        <div>
+          <div class="proj-sector">Produtores e Agronegócio</div>
+          <div class="proj-title">Planejamento para expansão Agrícola</div>
+        </div>
+        <div class="proj-badge">Planejamento & Estruturação</div>
+        <div class="proj-plus">+</div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-content">
+          <div>
+            <div class="pc-label">O desafio</div>
+            <div class="pc-text">Estruturar o planejamento completo de todos os custos e infraestrutura necessária para expansão das operações, incluindo aquisição de sistemas de irrigação, maquinário e calendário detalhado de tratos agrícolas, buscando captação de crédito para o investimento. Análise de viabilidade e rentabilidade ao decorrer da maturação da cultura (citros), alinhada à estratégia de caixa do produtor.</div>
+            <div class="pc-hl"><div class="pc-hl-dot"></div><div class="pc-hl-txt">Mapeamento completo de toda a estutura, riscos e oportunidades para os próximos 5 anos.</div></div>
+          </div>
+          <div>
+            <div class="pc-label">A abordagem</div>
+            <div class="pc-text">Pesquisa detalhada e compreensão afundo de todos os processos e necessidades no mercado em questão. Seis meses de projeto para identificação de cada gatilho necessário, visando garantir clareza nos dados projetados e assertividade dos investimentos</div>
+          </div>
+          <div>
+            <div class="pc-label">Competências aplicadas</div>
+            <div class="tag-row">
+              <span class="tag">Pesquisa de Mercado</span>
+              <span class="tag">Modelagem de Dados e Cenários</span>
+              <span class="tag">Projeção financeira premissada</span>
+              <span class="tag">Gatilhos e cenários de resultado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-row reveal" onclick="toggleProj(this)">
+      <div class="proj-head">
+        <div class="proj-num">02</div>
+        <div>
+          <div class="proj-sector">Varejo de Cosméticos</div>
+          <div class="proj-title">Diagnóstico Financeiro para Sustentabilidade</div>
+        </div>
+        <div class="proj-badge">Diagnóstico claro, com plano de ação direcionado pela necessidade real da empresa.</div>
+        <div class="proj-plus">+</div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-content">
+          <div>
+            <div class="pc-label">O desafio</div>
+            <div class="pc-text">Diagnosticar gargalos de performance dos últimos 3 anos, construindo um planejamento claro para suporte à decisão estratégica dos sócios, atuando no perfil empresarial, riscos da operação e oportunidades de maximização dos resultados na infraestrutura existente.</div>
+            <div class="pc-hl"><div class="pc-hl-dot"></div><div class="pc-hl-txt">Identificação da eficiência operacional e capital de giro como principais gargalhos: gatilho central do plano desenhado</div></div>
+          </div>
+          <div>
+            <div class="pc-label">A abordagem</div>
+            <div class="pc-text">Diagnóstico inicial (23–25), projeção mensal de receita/COGS/SG&A, análise tributária (IPI, ICMS, COFINS, PIS), projeção de dívidas judiciais e fiscais, e indicadores financeiros projetados com benchmarks do setor.</div>
+          </div>
+          <div>
+            <div class="pc-label">Competências aplicadas</div>
+            <div class="tag-row">
+              <span class="tag">Diagnóstico Financeiro completo</span>
+              <span class="tag">Árvore de Resultados</span>
+              <span class="tag">Modelagem financeira</span>
+              <span class="tag">Cenários e Gatilhos de Resultado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-row reveal" onclick="toggleProj(this)">
+      <div class="proj-head">
+        <div class="proj-num">03</div>
+        <div>
+          <div class="proj-sector">Produtor Alimentício</div>
+          <div class="proj-title">Diagnóstico Financeiro voltado à eficiência</div>
+        </div>
+        <div class="proj-badge">Produtividade baseada em gargalo</div>
+        <div class="proj-plus">+</div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-content">
+          <div>
+            <div class="pc-label">O desafio</div>
+            <div class="pc-text">Diagnosticar o desempenho financeiro do setor alimentício, analisando os drivers de queda de margem bruta e identificando os itens de principal ineficiência operacional.</div>
+            <div class="pc-hl"><div class="pc-hl-dot"></div><div class="pc-hl-txt">Custo por volume cresceu enquanto a produção caiu.</div></div>
+          </div>
+          <div>
+            <div class="pc-label">A abordagem</div>
+            <div class="pc-text">Análise completa dos resultados (DRE/BP/DFC), framework de composição financeira, análise de capital circulante e liquidez, detalhamento de custos com Pareto de itens críticos, e vetores de criticidade do setor alimentício.</div>
+          </div>
+          <div>
+            <div class="pc-label">Competências aplicadas</div>
+            <div class="tag-row">
+              <span class="tag">Árvore de Resultados</span>
+              <span class="tag">Análise horizontal/vertical</span>
+              <span class="tag">Cost deployment</span>
+              <span class="tag">Liquidez e capital</span>
+              <span class="tag">Eficiência Produtiva</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-row reveal" onclick="toggleProj(this)">
+      <div class="proj-head">
+        <div class="proj-num">04</div>
+        <div>
+          <div class="proj-sector">Logística e Transportadora</div>
+          <div class="proj-title">Solvência e Estrutura de Capital</div>
+        </div>
+        <div class="proj-badge">Reestruturação e Sustentabilidade</div>
+        <div class="proj-plus">+</div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-content">
+          <div>
+            <div class="pc-label">O desafio</div>
+            <div class="pc-text">Identificar os consumidores de resultado. Situação financeira crítica com passivos superiores aos ativos, identificando o gap entre capacidade operacional e obrigações de dívida.</div>
+            <div class="pc-hl"><div class="pc-hl-dot"></div><div class="pc-hl-txt">Gap anualizado de R$5,8M entre EBITDA operacional e custo das dívidas para 2026</div></div>
+          </div>
+          <div>
+            <div class="pc-label">A abordagem</div>
+            <div class="pc-text">Análise de estrutura de capital (quantidade e qualidade do Kd), evolução do passivo e liquidez, simulação de EBITDA vs. projeção de dívidas.</div>
+          </div>
+          <div>
+            <div class="pc-label">Competências aplicadas</div>
+            <div class="tag-row">
+              <span class="tag">Análise de solvência</span>
+              <span class="tag">Estrutura de capital</span>
+              <span class="tag">Simulação financeira</span>
+              <span class="tag">Gestão de dívidas</span>
+              <span class="tag">Análise setorial</span>
+              <span class="tag">Liquidez corrente</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METODOLOGIA -->
+<section id="metodologia">
+  <div class="sec-header reveal">
+    <p class="sec-tag">05 — Metodologia</p>
+    <h2 class="sec-title">Como estruturo<br>cada análise</h2>
+    <p class="sec-desc">Abordagem consistente e detalhada, adaptada ao contexto e à complexidade de cada empresa.</p>
+  </div>
+  <div class="method-grid">
+    <div class="method-card reveal">
+      <div class="method-n">01</div>
+      <div class="method-t">Composição Financeira</div>
+      <div class="method-d">Toda análise começa pela estruturação do framework de criação de valor da empresa, a partir da árvore de resultados nos seus principais drivers.</div>
+      <div class="method-its">
+        <div class="method-it">Análise de Resultado Operacioanl como proxies de performance</div>
+        <div class="method-it">Análise do Capital investido, giro e eficiência</div>
+        <div class="method-it">Identificação dos drivers de resultado-chave</div>
+      </div>
+    </div>
+    <div class="method-card reveal">
+      <div class="method-n">02</div>
+      <div class="method-t">Diagnóstico Histórico</div>
+      <div class="method-d">Leitura das demonstrações financeiras com análise horizontal (variação temporal) e vertical (participação percentual), identificando tendências, anomalias e pontos de atenção no contexto setorial.</div>
+      <div class="method-its">
+        <div class="method-it">DRE, BP e DFC consolidados e tratados</div>
+        <div class="method-it">Análise AH e AV padronizadas por receita líquida</div>
+        <div class="method-it">Contexto macroeconômico e conjuntura setorial</div>
+      </div>
+    </div>
+    <div class="method-card reveal">
+      <div class="method-n">03</div>
+      <div class="method-t">Projeção e Cenários</div>
+      <div class="method-d">Quando o escopo inclui planejamento, construo modelos detalhados e premissados, simulações de cenários e análise de sensibilidade nos principais drivers.</div>
+      <div class="method-its">
+        <div class="method-it">Premissas embasadas em histórico e pesquisa de mercado</div>
+        <div class="method-it">Projeção detalhada de DRE e DFC</div>
+        <div class="method-it">Indicadores financeiros projetados</div>
+      </div>
+    </div>
+    <div class="method-card reveal">
+      <div class="method-n">04</div>
+      <div class="method-t">Recomendações Acionáveis</div>
+      <div class="method-d">A entrega final nunca termina nos números — cada diagnóstico inclui conclusões estratégicas, riscos mapeados por prioridade e recomendações estruturadas para os decisores tomarem ação.</div>
+      <div class="method-its">
+        <div class="method-it">Riscos e contingências priorizados por impacto</div>
+        <div class="method-it">Plano de ação por área crítica identificada</div>
+        <div class="method-it">Linguagem clara e direta para o decisor final</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTRE EM CONTATO -->
+<section id="contato">
+  <div class="sec-header reveal">
+    <p class="sec-tag">Entre em Contato</p>
+    <p class="sec-desc">Vamos juntos, te proporcionar mais <strong>clareza e direcionamento financeiro?</strong></p>
+  </div>
+  <div class="proj-grid">
+
+    <div class="proj-row reveal" onclick="toggleProj(this)">
+      <div class="proj-head">
+        <div class="proj-num">*</div>
+        <div>
+          <div class="proj-sector">yasmim novais | CONSULTORIA FINANCEIRA</div>
+          <div class="proj-title">(19) 99756-9475</div>
+        </div>
+      </div>
+      <div class="proj-body">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-wrap">
+  <footer>
+    <div class="footer-brand">Portfólio Profissional</div>
+    <div class="footer-note">
+      Este portfólio é de uso pessoal para referência profissional.<br><br> Desenvolvido por <strong>Yasmim Novais</strong>
+    </div>
+  </footer>
+</div>
+
+<script>
+  function toggleProj(el) {
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.proj-row').forEach(r => r.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 70);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.querySelectorAll('.sk-bar-fill').forEach(bar => {
+            bar.style.transform = `scaleX(${bar.dataset.w})`;
+          });
+        }, 300);
+        barObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.skill-card').forEach(c => barObs.observe(c));
+</script>
+</body>
+</html>
